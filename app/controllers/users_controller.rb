@@ -37,6 +37,10 @@ class UsersController < ApplicationController
     render_resource User.create create_params
   end
 
+  def me
+    render_resource current_user
+  end
+
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
