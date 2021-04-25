@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
 
   def render_resource(resource)
     return head 404 if resource.nil?
