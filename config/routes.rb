@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :posts
   resources :accounts
   resources :users
   resources :sessions, only: [:create]
