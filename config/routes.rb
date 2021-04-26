@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :blogs
   post 'auth/login'
   resources :auth
   resources :posts
