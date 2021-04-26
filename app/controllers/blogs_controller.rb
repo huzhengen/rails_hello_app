@@ -3,11 +3,26 @@ class BlogsController < ApplicationController
 
   # GET /blogs or /blogs.json
   def index
-    @blogs = Blog.all
+    blogs = Blog.all
+    # render json: blogs, status: 200
+    render json: {
+      "status": "ok",
+      "msg": "获取成功",
+      "total": 200,
+      "page": 2,
+      "totalPage": 10,
+      "data": blogs
+    }
   end
 
   # GET /blogs/1 or /blogs/1.json
   def show
+    blog = Blog.find(params[:id])
+    if blog
+      render json: blog, status: 200
+    else
+      render json: { error: "Blog Not Found." }
+    end
   end
 
   # GET /blogs/new
@@ -21,16 +36,19 @@ class BlogsController < ApplicationController
 
   # POST /blogs or /blogs.json
   def create
-    @blog = Blog.new(blog_params)
+    blog = Blog.new(
+      title: blog_params[:title],
+      description: blog_params[:description],
+      content: blog_params[:description],
+      user_id: blog_params[:user_id]
+    )
 
-    respond_to do |format|
-      if @blog.save
-        format.html { redirect_to @blog, notice: "Blog was successfully created." }
-        format.json { render :show, status: :created, location: @blog }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @blog.errors, status: :unprocessable_entity }
-      end
+    if blog.save
+      render json: blog, status: 200
+      # render json: blog, status: :created
+      # format.json { render :show, status: :created, location: @blog }
+    else
+      render json: { error: "Error creating review." }
     end
   end
 
@@ -57,13 +75,14 @@ class BlogsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_blog
-      @blog = Blog.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def blog_params
-      params.require(:blog).permit(:title, :description, :content, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_blog
+    @blog = Blog.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def blog_params
+    params.permit([:title, :description, :content, :user_id])
+  end
 end
