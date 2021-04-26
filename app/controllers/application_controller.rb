@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
 
+  protect_from_forgery with: :null_session
+
   def render_resource(resource)
     return head 404 if resource.nil?
     if resource.errors.empty?
