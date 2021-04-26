@@ -4,15 +4,18 @@ class BlogsController < ApplicationController
   # GET /blogs or /blogs.json
   def index
     blogs = Blog.all
-    # render json: blogs, status: 200
-    render json: {
-      "status": "ok",
-      "msg": "获取成功",
-      "total": 200,
-      "page": 2,
-      "totalPage": 10,
-      "data": blogs
-    }
+    if blogs
+      render json: {
+        "status": "ok",
+        "msg": "获取成功",
+        "total": 200,
+        "page": 2,
+        "totalPage": 10,
+        "data": blogs
+      }
+    else
+      render json: { "status": "fail", "msg": "系统异常" }
+    end
   end
 
   # GET /blogs/1 or /blogs/1.json
@@ -39,7 +42,7 @@ class BlogsController < ApplicationController
     blog = Blog.new(
       title: blog_params[:title],
       description: blog_params[:description],
-      content: blog_params[:description],
+      content: blog_params[:content],
       user_id: blog_params[:user_id]
     )
 
